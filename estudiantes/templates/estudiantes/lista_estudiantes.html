@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Estudiantes</title>
+</head>
+<body>
+    <h1>Lista de Estudiantes</h1>
+    <a href="{% url 'formulario' %}">Registrar nuevo estudiante</a>
+    <br><br>
+    {% if estudiantes %}
+        <table border="1" cellpadding="8">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Edad</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for estudiante in estudiantes %}
+                <tr>
+                    <td>{{ estudiante.nombre }}</td>
+                    <td>{{ estudiante.edad }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No hay estudiantes registrados.</p>
+    {% endif %}
+    <br>
+    <a href="{% url 'home' %}">Volver al inicio</a>
+</body>
+</html>

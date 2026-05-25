@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Estudiante</title>
+</head>
+<body>
+    <h1>Registrar Estudiante</h1>
+    <form method="POST" action="{% url 'guardar' %}">
+        {% csrf_token %}
+        <label>Nombre: <input type="text" name="nombre" required></label><br><br>
+        <label>Edad: <input type="number" name="edad" required></label><br><br>
+        <button type="submit">Guardar</button>
+    </form>
+    <br>
+    <a href="{% url 'home' %}">Volver al inicio</a>
+</body>
+</html>

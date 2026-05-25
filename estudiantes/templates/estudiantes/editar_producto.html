@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Producto</title>
+</head>
+<body>
+    <h1>Editar Producto</h1>
+
+    <form method="POST" action="{% url 'actualizar_producto' producto.id %}">
+        {% csrf_token %}
+
+        <label for="nombre">Nombre del producto:</label><br>
+        <input type="text" id="nombre" name="nombre" value="{{ producto.nombre }}" required><br><br>
+
+        <label for="descripcion">Descripción:</label><br>
+        <textarea id="descripcion" name="descripcion" rows="3" required>{{ producto.descripcion }}</textarea><br><br>
+
+        <label for="precio">Precio:</label><br>
+        <input type="number" id="precio" name="precio" step="0.01" min="0" value="{{ producto.precio }}" required><br><br>
+
+        <label for="cantidad">Cantidad en stock:</label><br>
+        <input type="number" id="cantidad" name="cantidad" min="0" value="{{ producto.cantidad }}" required><br><br>
+
+        <button type="submit">💾 Guardar cambios</button>
+        <a href="{% url 'lista_productos' %}"><button type="button">Cancelar</button></a>
+    </form>
+</body>
+</html>
