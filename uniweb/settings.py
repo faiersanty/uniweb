@@ -1,6 +1,11 @@
 from pathlib import Path
 import os
-import dj_database_url
+
+try:
+    import dj_database_url
+    HAS_DJ_DATABASE_URL = True
+except ImportError:
+    HAS_DJ_DATABASE_URL = False
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -53,17 +58,30 @@ TEMPLATES = [
 WSGI_APPLICATION = 'uniweb.wsgi.application'
 
 # Base de datos
-# - En Railway: usa DATABASE_URL (PostgreSQL) que Railway inyecta automáticamente
-# - En local: usa SQLite
+# - Railway/Render: usa DATABASE_URL (PostgreSQL)
+# - PythonAnywhere: usa MYSQL_* variables
+# - Local: usa SQLite
 DATABASE_URL = os.environ.get('DATABASE_URL')
+MYSQL_HOST = os.environ.get('MYSQL_HOST')
 
-if DATABASE_URL:
+if DATABASE_URL and HAS_DJ_DATABASE_URL:
     DATABASES = {
         'default': dj_database_url.config(
             default=DATABASE_URL,
             conn_max_age=600,
             ssl_require=True,
         )
+    }
+elif MYSQL_HOST:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ.get('MYSQL_DATABASE', 'uniweb'),
+            'USER': os.environ.get('MYSQL_USER', ''),
+            'PASSWORD': os.environ.get('MYSQL_PASSWORD', ''),
+            'HOST': MYSQL_HOST,
+            'PORT': '3306',
+        }
     }
 else:
     DATABASES = {
