@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: uniweb
+    runtime: python
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput"
+    startCommand: "python manage.py migrate && gunicorn uniweb.wsgi --log-file -"
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: uniweb-db
+          property: connectionString
+
+databases:
+  - name: uniweb-db
+    databaseName: uniweb
+    plan: free
